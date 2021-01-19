@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.tbee.xml2xxx</groupId>
+	<artifactId>xml2xxx</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>XML2XXX</name>
+
+	<properties>
+		<maven.compiler.release>15</maven.compiler.release>
+		<maven.compiler.target>15</maven.compiler.target>
+		<maven.compiler.source>15</maven.compiler.source>
+	</properties>
+	
+	<modules>
+		<module>xml2yaml</module>
+	</modules>
+	<build>
+		<pluginManagement></pluginManagement>
+	</build>
+</project>

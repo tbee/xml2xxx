@@ -1,0 +1,27 @@
+<xml2yaml>
+	<grp>
+		<item>
+			<str id="name">Mark McGwire</str>	
+			<num id="hr">65</num>
+			<num id="avg">0.278</num>	
+		</item>
+	</grp>
+	<grp>
+		<item>
+			<str id="name">Sammy Sosa</str>	
+			<num id="hr">63</num>
+			<num id="avg">0.288</num>	
+		</item>
+	</grp>
+</xml2yaml>
+
+<!-- Expected YAML:
+-
+  name: Mark McGwire
+  hr:   65
+  avg:  0.278
+-
+  name: Sammy Sosa
+  hr:   63
+  avg:  0.288
+-->

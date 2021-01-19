@@ -1,0 +1,13 @@
+<xml2yaml>
+	<grp>
+		<item><str>Mark McGwire</str></item>
+		<item><str>Sammy Sosa</str></item>
+		<item><str>Ken Griffey</str></item>
+	</grp>
+</xml2yaml>
+
+<!-- Expected YAML:
+- Mark McGwire
+- Sammy Sosa
+- Ken Griffey
+-->

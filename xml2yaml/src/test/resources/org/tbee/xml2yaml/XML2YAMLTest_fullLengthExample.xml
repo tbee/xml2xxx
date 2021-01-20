@@ -1,20 +1,20 @@
 <xml2yaml tag="clarkevans.com,2002:invoice">
 	<num id="invoice">34843</num>
 	<dat id="date">2001-01-23</dat>
-	<grp id="bill-to">
+	<grp id="bill-to" key="id001">
 		<str id="given">Chris</str>
 		<str id="family">Dumars</str>
 		<grp id="address">
-			<grp id="lines">
-				<item><str>458 Walkman Dr.</str></item>
-				<item><str>Suite #292</str></item>
-			</grp>
+			<str id="lines"><![CDATA[
+				458 Walkman Dr.
+				Suite #292
+			]]></str>
 			<str id="city">Royal Oak</str>
 			<str id="state">MI</str>
 			<num id="postal">48046</num>
 		</grp>
 	</grp>
-	<grp id="ship-to" ref="bill-to"/>
+	<grp id="ship-to" ref="id001"/>
 	<grp id="product">
 		<item>
 			<str id="sku">BL394D</str>

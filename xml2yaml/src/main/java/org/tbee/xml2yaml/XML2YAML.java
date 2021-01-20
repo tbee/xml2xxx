@@ -24,6 +24,9 @@ import javax.xml.stream.events.XMLEvent;
  * https://stackoverflow.com/questions/15540635/what-is-the-use-of-the-pipe-symbol-in-yaml
  *   | symbol maintains newlines, with the value following determines how many spaces to strip
  *   > symbol replaces newlines with a space
+ *   
+ * TODO
+ * - multiline strings
  */
 public class XML2YAML {
 

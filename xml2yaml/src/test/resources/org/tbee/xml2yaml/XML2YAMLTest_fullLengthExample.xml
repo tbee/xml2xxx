@@ -1,4 +1,4 @@
-<xml2yaml tag="clarkevans.com,2002:invoice">
+<xml2yaml>
 	<num id="invoice">34843</num>
 	<dat id="date">2001-01-23</dat>
 	<grp id="bill-to" key="id001">
@@ -32,22 +32,13 @@
 	<num id="tax">251.42</num>
 	<num id="total">4443.52</num>
 	<str id="comments"><![CDATA[
-    Late afternoon is best.
-    Backup contact is Nancy
-    Billsmer @ 338-4338.
+	    Late afternoon is best.
+	    Backup contact is Nancy
+	    Billsmer @ 338-4338.
 	]]></str>
 </xml2yaml>
 
-<!-- considerations
-* xml2yaml is also grp
-* A grp is also a list and can contain value tags (str, num, ...) and item tags 
-* An item is also a grp
-? num or int and dec?
-? CDATA is complex, do we need to be exact? 
--->
-
 <!-- Expected YAML:
-- - - !<tag:clarkevans.com,2002:invoice>
 invoice: 34843
 date   : 2001-01-23
 bill-to: &id001

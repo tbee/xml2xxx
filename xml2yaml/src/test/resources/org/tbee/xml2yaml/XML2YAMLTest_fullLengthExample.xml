@@ -1,7 +1,7 @@
 <xml2yaml>
 	<invoice>34843</invoice>
 	<date>2001-01-23</date>
-	<bill-to key="id001">
+	<bill-to id="id001">
 		<given>Chris</given>
 		<family>Dumars</family>
 		<address>

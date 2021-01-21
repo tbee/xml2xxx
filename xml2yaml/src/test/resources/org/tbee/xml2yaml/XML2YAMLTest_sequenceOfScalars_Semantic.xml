@@ -1,0 +1,11 @@
+<xml2yaml>
+	<_>Mark McGwire</_>
+	<_>Sammy Sosa</_>
+	<_>Ken Griffey</_>
+</xml2yaml>
+
+<!-- Expected YAML:
+- Mark McGwire
+- Sammy Sosa
+- Ken Griffey
+-->

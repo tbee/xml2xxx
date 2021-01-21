@@ -9,48 +9,65 @@ import org.junit.Test;
 public class XML2YAMLTest {
 
 	@Test
-	public void sequenceOfScalars() {
+	public void sequenceOfScalars_Meta() {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("sequenceOfScalars"), outputStream);
+		new XML2YAML().convertMeta(openXML("sequenceOfScalars_Meta"), outputStream);
 		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("sequenceOfScalars:\n" + yaml);
+		System.out.println("sequenceOfScalars_Meta:\n" + yaml + "\n==============================");
+	}
+	@Test
+	public void sequenceOfScalars_Semantic() {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		new XML2YAML().convertSemantic(openXML("sequenceOfScalars_Semantic"), outputStream);
+		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+		System.out.println("sequenceOfScalars_Semantic:\n" + yaml + "\n==============================");
 	}
 
 	@Test
-	public void mappingScalarsToScalars() {
+	public void mappingScalarsToScalars_Meta() {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("mappingScalarsToScalars"), outputStream);
+		new XML2YAML().convertMeta(openXML("mappingScalarsToScalars_Meta"), outputStream);
 		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("mappingScalarsToScalars:\n" + yaml);
+		System.out.println("mappingScalarsToScalars_Meta:\n" + yaml + "\n==============================");
 	}
 
 	@Test
-	public void mappingScalarsToSequences() {
+	public void mappingScalarsToSequences_Meta() {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("mappingScalarsToSequences"), outputStream);
+		new XML2YAML().convertMeta(openXML("mappingScalarsToSequences_Meta"), outputStream);
 		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("mappingScalarsToSequences:\n" + yaml);
+		System.out.println("mappingScalarsToSequences_Meta:\n" + yaml + "\n==============================");
 	}
 
 	@Test
-	public void sequenceOfMappings() {
+	public void sequenceOfMappings_Meta() {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("sequenceOfMappings"), outputStream);
+		new XML2YAML().convertMeta(openXML("sequenceOfMappings_Meta"), outputStream);
 		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("sequenceOfMappings:\n" + yaml);
+		System.out.println("sequenceOfMappings_Meta:\n" + yaml + "\n==============================");
 	}
 
 	@Test
-	public void fullLengthExample() {
+	public void fullLengthExample_Meta() {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("fullLengthExample"), outputStream);
+		new XML2YAML().convertMeta(openXML("fullLengthExample_Meta"), outputStream);
 		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("fullLengthExample:\n" + yaml);
+		System.out.println("fullLengthExample_Meta:\n" + yaml + "\n==============================");
+	}
+	@Test
+	public void fullLengthExample_Semantic() {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		new XML2YAML().convertSemantic(openXML("fullLengthExample_Semantic"), outputStream);
+		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+		System.out.println("fullLengthExample_Semantic:\n" + yaml + "\n==============================");
 	}
 
 	private InputStream openXML(String filename) {
 		String name = this.getClass().getSimpleName() + "_"  + filename + ".xml";
 		InputStream inputStream = this.getClass().getResourceAsStream(name);
+		if (inputStream == null) {
+			throw new RuntimeException("Resource not found: " + name);
+		}
 		return inputStream;
 	}
 }

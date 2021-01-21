@@ -1,17 +1,15 @@
 package org.tbee.xml2yaml;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Stack;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -30,67 +28,182 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class XML2YAML {
 
-	public void convert(InputStream inputStream, OutputStream outputStream) {
+	/**
+	 * 
+	 */
+	public void convertMeta(InputStream inputStream, OutputStream outputStream) {
+		convert(inputStream, outputStream, new Handler() {
+			
+			@Override
+			public void startElement(Node currentNode, Node parentNode, Writer writer) throws Exception {
+			    currentNode.isItem = "item".equals(currentNode.name);
+			    
+			    // new line if previous 
+			    if (parentNode.isItem && parentNode.previousNode == null) {
+			    	// first entry does not have a new line
+			    }
+			    else {
+			    	writer.append("\n" + indent(currentNode.indent));
+			    }
+				
+		    	if (currentNode.isItem) {
+		    		writer.append("- ");
+		    	}
+		    	else {
+		    		writer.append(currentNode.id);
+		    		writer.append(": ");
+		        	if (currentNode.key != null) {
+		        		writer.append("&" + currentNode.key);
+		        	}
+		        	if (currentNode.ref != null) {
+		        		writer.append("*" + currentNode.ref);
+		        	}
+		    	}
+			}
+			
+			@Override
+			public void content(Node currentNode, Node parentNode, String content, Writer writer) throws Exception {
+	        	if (!content.isBlank()) {
+	        		writer.append(content);
+	        	}
+			}
+			
+			@Override
+			public void endElement(Node currentNode, Node parentNode, Writer writer) {
+			}
+		});
+	}
+	
+	/**
+	 * 
+	 */
+	public void convertSemantic(InputStream inputStream, OutputStream outputStream) {
+		convert(inputStream, outputStream, new Handler() {
+			
+			@Override
+			public void startElement(Node currentNode, Node parentNode, Writer writer) throws Exception {
+			    currentNode.isItem = "_".equals(currentNode.name);
+			    
+			    // new line if previous 
+			    if (parentNode.isItem && parentNode.previousNode == null) {
+			    	// first entry does not have a new line
+			    }
+			    else {
+			    	writer.append("\n" + indent(currentNode.indent));
+			    }
+				
+		    	if (currentNode.isItem) {
+		    		writer.append("- ");
+		    	}
+		    	else {
+		    		writer.append(currentNode.id != null ? currentNode.id : currentNode.name);
+		    		writer.append(": ");
+		        	if (currentNode.key != null) {
+		        		writer.append("&" + currentNode.key);
+		        	}
+		        	if (currentNode.ref != null) {
+		        		writer.append("*" + currentNode.ref);
+		        	}
+		    	}
+			}
+			
+			@Override
+			public void content(Node currentNode, Node parentNode, String content, Writer writer) throws Exception {
+	        	if (!content.isBlank()) {
+	        		writer.append(content);
+	        	}
+			}
+			
+			@Override
+			public void endElement(Node currentNode, Node parentNode, Writer writer) {
+			}
+		});
+	}
+	
+	
+	/*
+	 * 
+	 */
+	private void convert(InputStream inputStream, OutputStream outputStream, Handler handler) {
 		// https://www.baeldung.com/java-stax
 		try {
-			Writer writer = new OutputStreamWriter(outputStream,"UTF-8");
 			int indent = 0;
-			boolean contentElement = false;
 			
+			// Prepare a stack to keep track of what happened around our current node
+			Stack<Node> stack = new Stack<>();
+			stack.push(new Node());
+			
+			// the output 
+			Writer writer = new OutputStreamWriter(outputStream,"UTF-8");
+			
+			// Parse the xml
 			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 			XMLEventReader reader = xmlInputFactory.createXMLEventReader(inputStream);
 			while (reader.hasNext()) {
 			    XMLEvent nextEvent = reader.nextEvent();
-			    
-			    if (nextEvent.isStartElement()) {
+			    			
+			    // start
+			    if (nextEvent.isStartElement()) {				    
+				    Node parentNode = stack.peek();
+				    Node currentNode = new Node();
+				    
 			        StartElement startElement = nextEvent.asStartElement();
-			        String name = startElement.getName().getLocalPart();
-					String id = attr(startElement, "id");
-					String key = attr(startElement, "key");
-					String ref = attr(startElement, "ref");
+			        currentNode.name = startElement.getName().getLocalPart();
+					currentNode.key = attr(startElement, "key");
+					currentNode.ref = attr(startElement, "ref");
+					currentNode.id = attr(startElement, "id");
+					currentNode.indent = indent;
 					
-		        	String idPrefix = (id == null ? "" : indent(indent) + id + ": ");
-		        	if (key != null) {
-		        		idPrefix += "&" + key;
-		        	}
-		        	if (ref != null) {
-		        		idPrefix += "*" + ref;
-		        	}
-					switch (name) {
-			        	case "grp"  -> { writer.append(idPrefix + "\n"); indent++; }
-			        	case "item" -> { writer.append(indent(indent) + "- "); indent++; }
-			        	case "str"  -> { writer.append(idPrefix); contentElement = true; }
-			        	case "num"  -> { writer.append(idPrefix); contentElement = true; }
-			        	case "dat"  -> { writer.append(idPrefix); contentElement = true; }
-		        	}
+				    if (!"xml2yaml".equals(currentNode.name)) {
+					    handler.startElement(currentNode, parentNode, writer);				    	
+			        	indent++;
+				    }
+			    	stack.push(currentNode);
 			    }
 			    
 		        if (nextEvent.isCharacters()) {
+				    Node parentNode = stack.peek();
+				    Node currentNode = stack.peek();
 		        	String content = nextEvent.asCharacters().getData();
-		        	if (contentElement) {
-		        		writer.append(content);
+		        	if (!content.isBlank()) {
+		        		handler.content(currentNode, parentNode, content, writer);
 		        	}
 		        }
+		        
 		        if (nextEvent.isEndElement()) {
-		            EndElement endElement = nextEvent.asEndElement();
-			        String name = endElement.getName().getLocalPart();
-		        	switch (name) {
-			        	case "grp"  -> indent--;
-			        	case "item" -> indent--;
-			        	case "str"  -> writer.append("\n");
-			        	case "num"  -> writer.append("\n");
-			        	case "dat"  -> writer.append("\n");
-		        	}
-		        	contentElement = false;
+				    Node currentNode = stack.pop();
+				    Node parentNode = stack.peek();
+
+				    if (!"xml2yaml".equals(currentNode.name)) {
+					    handler.endElement(currentNode, parentNode, writer);
+			        	indent--;
+				    }
+				    
+				    parentNode.previousNode = currentNode;
 		        }
 			}
 			writer.flush();
 		}
-		catch (XMLStreamException | IOException e) {
+		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	interface Handler {
+		void startElement(Node currentNode, Node parentNode, Writer writer) throws Exception;
+		void content(Node currentNode, Node parentNode, String content, Writer writer) throws Exception;
+		void endElement(Node currentNode, Node parentNode, Writer writer) throws Exception;
+	}
+	class Node {
+		String name;
+		boolean isItem = false;
+		boolean hasContent = false;
+		Node previousNode = null;
+		String id = null;
+		String key = null;
+		String ref = null;
+		int indent;
+	}
+
 	private String attr(StartElement startElement, String name) {
     	Attribute idAttribute = startElement.getAttributeByName(new QName(name));
 		String id = (idAttribute == null ? null : idAttribute.getValue());

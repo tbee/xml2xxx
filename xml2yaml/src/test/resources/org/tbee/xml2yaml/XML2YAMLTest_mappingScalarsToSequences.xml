@@ -1,0 +1,23 @@
+<xml2yaml>
+	<american>
+		<_>Boston Red Sox</_>
+		<_>Detroit Tigers</_>
+		<_>New York Yankees</_>
+	</american>
+	<national>
+		<_>New York Mets</_>
+		<_>Chicago Cubs</_>
+		<_>Atlanta Braves</_>
+	</national>
+</xml2yaml>
+
+<!-- Expected YAML:
+american:
+  - Boston Red Sox
+  - Detroit Tigers
+  - New York Yankees
+national:
+  - New York Mets
+  - Chicago Cubs
+  - Atlanta Braves
+-->

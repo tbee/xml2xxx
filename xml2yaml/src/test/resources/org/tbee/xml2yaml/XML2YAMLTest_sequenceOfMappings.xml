@@ -1,0 +1,21 @@
+<xml2yaml>
+	<_>
+		<name>Mark McGwire</name>	
+		<hr>65</hr>
+		<avg>0.278</avg>	
+	</_>
+	<_>
+		<name>Sammy Sosa</name>	
+		<hr>63</hr>
+		<avg>0.288</avg>	
+	</_>
+</xml2yaml>
+
+<!-- Expected YAML:
+- name: Mark McGwire
+  hr:   65
+  avg:  0.278
+- name: Sammy Sosa
+  hr:   63
+  avg:  0.288
+-->

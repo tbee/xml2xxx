@@ -31,53 +31,7 @@ public class XML2YAML {
 	/**
 	 * 
 	 */
-	public void convertMeta(InputStream inputStream, OutputStream outputStream) {
-		convert(inputStream, outputStream, new Handler() {
-			
-			@Override
-			public void startElement(Node currentNode, Node parentNode, Writer writer) throws Exception {
-			    currentNode.isItem = "item".equals(currentNode.name);
-			    
-			    // new line if previous 
-			    if (parentNode.isItem && parentNode.previousNode == null) {
-			    	// first entry does not have a new line
-			    }
-			    else {
-			    	writer.append("\n" + indent(currentNode.indent));
-			    }
-				
-		    	if (currentNode.isItem) {
-		    		writer.append("- ");
-		    	}
-		    	else {
-		    		writer.append(currentNode.id);
-		    		writer.append(": ");
-		        	if (currentNode.key != null) {
-		        		writer.append("&" + currentNode.key);
-		        	}
-		        	if (currentNode.ref != null) {
-		        		writer.append("*" + currentNode.ref);
-		        	}
-		    	}
-			}
-			
-			@Override
-			public void content(Node currentNode, Node parentNode, String content, Writer writer) throws Exception {
-	        	if (!content.isBlank()) {
-	        		writer.append(content);
-	        	}
-			}
-			
-			@Override
-			public void endElement(Node currentNode, Node parentNode, Writer writer) {
-			}
-		});
-	}
-	
-	/**
-	 * 
-	 */
-	public void convertSemantic(InputStream inputStream, OutputStream outputStream) {
+	public void convert(InputStream inputStream, OutputStream outputStream) {
 		convert(inputStream, outputStream, new Handler() {
 			
 			@Override
@@ -96,10 +50,10 @@ public class XML2YAML {
 		    		writer.append("- ");
 		    	}
 		    	else {
-		    		writer.append(currentNode.id != null ? currentNode.id : currentNode.name);
+		    		writer.append(currentNode.key != null ? currentNode.key : currentNode.name);
 		    		writer.append(": ");
-		        	if (currentNode.key != null) {
-		        		writer.append("&" + currentNode.key);
+		        	if (currentNode.id != null) {
+		        		writer.append("&" + currentNode.id);
 		        	}
 		        	if (currentNode.ref != null) {
 		        		writer.append("*" + currentNode.ref);
@@ -149,9 +103,9 @@ public class XML2YAML {
 				    
 			        StartElement startElement = nextEvent.asStartElement();
 			        currentNode.name = startElement.getName().getLocalPart();
-					currentNode.key = attr(startElement, "key");
-					currentNode.ref = attr(startElement, "ref");
-					currentNode.id = attr(startElement, "id");
+					currentNode.key = attr(startElement, "key"); // key can overwrite name
+					currentNode.id = attr(startElement, "id"); // id can be referenced by ref
+					currentNode.ref = attr(startElement, "ref"); // ref can reference an id
 					currentNode.indent = indent;
 					
 				    if (!"xml2yaml".equals(currentNode.name)) {
@@ -198,8 +152,8 @@ public class XML2YAML {
 		boolean isItem = false;
 		boolean hasContent = false;
 		Node previousNode = null;
-		String id = null;
 		String key = null;
+		String id = null;
 		String ref = null;
 		int indent;
 	}

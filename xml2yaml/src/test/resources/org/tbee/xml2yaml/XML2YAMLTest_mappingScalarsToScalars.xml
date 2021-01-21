@@ -1,0 +1,11 @@
+<xml2yaml>		
+	<hr>65</hr> <!-- Home runs -->	
+	<avg>0.278</avg> <!-- Batting average -->	
+	<rbi>147</rbi> <!-- Runs Batted In -->
+</xml2yaml>
+
+<!-- Expected YAML:
+hr: 65    
+avg: 0.278 
+rbi: 147    
+-->

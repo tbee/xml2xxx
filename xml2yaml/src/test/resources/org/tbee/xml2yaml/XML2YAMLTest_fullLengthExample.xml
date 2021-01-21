@@ -5,10 +5,10 @@
 		<given>Chris</given>
 		<family>Dumars</family>
 		<address>
-			<lines><![CDATA[
+			<lines stripIdentx="">
 				458 Walkman Dr.
 				Suite #292
-			]]></lines>
+			</lines>
 			<city>Royal Oak</city>
 			<state>MI</state>
 			<postal>48046</postal>
@@ -31,10 +31,10 @@
 	</product>
 	<tax>251.42</tax>
 	<total>4443.52</total>
-	<comments><![CDATA[
-	    Late afternoon is best.
-	    Backup contact is Nancy
-	    Billsmer @ 338-4338.
+	<comments replaceNewlines="true"><![CDATA[	
+		Late afternoon is best.
+		Backup contact is Nancy
+		Billsmer @ 338-4338.
 	]]></comments>
 </xml2yaml>
 
@@ -45,7 +45,7 @@ bill-to: &id001
     given  : Chris
     family : Dumars
     address:
-        lines: |
+        lines: |12+
             458 Walkman Dr.
             Suite #292
         city    : Royal Oak
@@ -63,7 +63,7 @@ product:
       price       : 2392.00
 tax  : 251.42
 total: 4443.52
-comments:
+comments: >
     Late afternoon is best.
     Backup contact is Nancy
     Billsmer @ 338-4338.

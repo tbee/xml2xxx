@@ -59,17 +59,19 @@ public class XML2YAML {
 			Writer writer = new OutputStreamWriter(outputStream,"UTF-8");
 			
 			// Parse the xml
+		    StartElement startElement = null;
 			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 			XMLEventReader reader = xmlInputFactory.createXMLEventReader(inputStream);
 			while (reader.hasNext()) {
 			    XMLEvent nextEvent = reader.nextEvent();
-			    			
+	        	System.out.println("!!!!eventType=" + nextEvent.getEventType());
+			    
 			    // setup a new node
 			    if (nextEvent.isStartElement()) {				    
 				    Node parentNode = stack.peek();
 				    Node currentNode = new Node();
 				    
-			        StartElement startElement = nextEvent.asStartElement();
+			        startElement = nextEvent.asStartElement();
 			        currentNode.name = startElement.getName().getLocalPart();
 			        currentNode.isXml2Yaml = "xml2yaml".equals(currentNode.name);
 				    currentNode.isItem = "_".equals(currentNode.name);
@@ -84,10 +86,11 @@ public class XML2YAML {
 			    }
 			    
 			    // write content
-		        if (nextEvent.isCharacters()) {
+		        if (nextEvent.isCharacters() && startElement != null) {
 		        	String content = nextEvent.asCharacters().getData();
 		        	if (!content.isBlank()) {
-	            		writer.append(content);
+					    Node currentNode = stack.peek();
+		        		content(content, startElement, nextEvent, currentNode, writer);
 		        	}
 		        }
 		        
@@ -116,13 +119,10 @@ public class XML2YAML {
 	/*
 	 * 
 	 */
-	public void startElement(StartElement startElement, Node currentNode, Node parentNode, Writer writer) throws Exception {
-		String key = attr(startElement, "key"); // key can overwrite name as the yaml key
-		if (key == null) {
-			key = currentNode.name; // but apparently it did not
-		}
-		String id = attr(startElement, "id"); // id can be referenced by ref
-		String ref = attr(startElement, "ref"); // ref can reference an id
+	private void startElement(StartElement startElement, Node currentNode, Node parentNode, Writer writer) throws Exception {
+		String key = attr(startElement, "key", currentNode.name); // key can overwrite name as the yaml key
+		String id = attr(startElement, "id", null); // id can be referenced by ref
+		String ref = attr(startElement, "ref", null); // ref can reference an id
 	    
     	// first tag after an item does not have a new line
 	    if (parentNode.isItem && parentNode.previousNode == null) {
@@ -135,9 +135,11 @@ public class XML2YAML {
 	    	writer.append(indent(currentNode.indent));
 	    }
 		
+	    // item tag
     	if (currentNode.isItem) {
     		writer.append("- ");
     	}
+    	// normal tag
     	else {
     		writer.append(key);
     		writer.append(": ");
@@ -150,16 +152,50 @@ public class XML2YAML {
     	}
 	}
 	
+	/*
+	 * 
+	 */
+	private void content(String content, StartElement startElement, XMLEvent contentEvent, Node currentNode, Writer writer) throws Exception {
+		
+		// replaceNewlines
+		boolean replaceNewlines = Boolean.parseBoolean(attr(startElement, "replaceNewlines", "false"));
+		boolean newlinesArePresent = content.contains("\n");
+		if (newlinesArePresent) {
+			content = content.stripIndent(); // https://mkyong.com/java/java-multi-line-string-text-blocks/
+			String indent = indent(currentNode.indent + 1);
+			content = indent + content.replace("\n", "\n" + indent);
+			
+			// TODO: detect CDATA and strip pre- and postfix
+			
+			if (replaceNewlines) {
+				writer.append(">");
+			}
+			else {
+				writer.append("|");
+			}
+			
+			// stripIndent
+			String stripIndent = attr(startElement, "stripIndent", null);
+			if (stripIndent != null) {
+				writer.append(stripIndent);
+			}
+		}
+		
+		
+		// write
+		writer.append(content);
+	}
+	
 	// =============================================================================================================
 	// Support
 	
 	/*
 	 * 
 	 */
-	private String attr(StartElement startElement, String name) {
+	private String attr(StartElement startElement, String name, String defaultValue) {
     	Attribute idAttribute = startElement.getAttributeByName(new QName(name));
-		String id = (idAttribute == null ? null : idAttribute.getValue());
-		return id;
+		String value = (idAttribute == null ? defaultValue : idAttribute.getValue());
+		return value;
 	}
 	
 	/*

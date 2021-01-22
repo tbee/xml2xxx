@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -176,13 +178,8 @@ public class XML2YAML {
 						.replaceAll("^\\s*\n", "") // preceding whitespace + first newline
 						.replaceAll("\n\\s*$", ""); // last newline + trailing whitespace
 				
-				// strip prefixes 
-				// TODO: replace with custom code so it can run on Java 11
-				content = content.stripIndent();
-				
-				// re-indent
-				String indent = indent(currentNode.indent + 1);
-				content = indent + content.replace("\n", "\n" + indent);
+				// strip indent 
+				content = replaceXMLIdentWithYAMLIndent(content, currentNode.indent + 1);
 			}
 
 			// replace or keep newlines
@@ -206,6 +203,37 @@ public class XML2YAML {
 		
 		// write
 		writer.append(content);
+	}
+
+	/*
+	 * Strip XML indent and replace with YAML indent
+	 */
+	private String replaceXMLIdentWithYAMLIndent(String content, int indent) {
+		// split in lines
+		List<String> lines = content.lines().collect(Collectors.toList());
+		
+		// determine the minimal number of whitespaces prefixing any of the lines
+		int numberOfWhitespaceMin = Integer.MAX_VALUE;		        
+		for (String line : lines) {
+		    int numberOfWhitespace = 0;		        
+		    while (Character.isWhitespace(line.charAt(0))) {
+		    	line = line.substring(1);
+		    	numberOfWhitespace++;
+		    }
+		    if (numberOfWhitespace < numberOfWhitespaceMin) {
+		    	numberOfWhitespaceMin = numberOfWhitespace;
+		    }
+		}
+		
+		// strip that number of whitespace from each line and replace with new ident
+		int numberOfWhitespaceMinFinal = numberOfWhitespaceMin;
+		String indentStr = indent(indent);
+		content = lines.stream()
+			.map((line) -> indentStr + line.substring(numberOfWhitespaceMinFinal))
+			.collect(Collectors.joining("\n"));
+		
+		// done
+		return content;
 	}
 	
 	// =============================================================================================================

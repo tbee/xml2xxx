@@ -4,7 +4,7 @@
 	<_>Ken Griffey</_>
 </xml2yaml>
 
-<!-- Expected YAML:
+<!-- Outputted YAML:
 - Mark McGwire
 - Sammy Sosa
 - Ken Griffey

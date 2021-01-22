@@ -11,12 +11,12 @@
 	</national>
 </xml2yaml>
 
-<!-- Expected YAML:
-american:
+<!-- Outputted YAML:
+american: 
   - Boston Red Sox
   - Detroit Tigers
   - New York Yankees
-national:
+national: 
   - New York Mets
   - Chicago Cubs
   - Atlanta Braves

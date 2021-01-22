@@ -157,11 +157,11 @@ public class XML2YAML {
 	private void content(String content, StartElement startElement, XMLEvent contentEvent, Node currentNode, Writer writer) throws Exception {
 		
 		// replaceNewlines
-		boolean replaceNewlines = bool(startElement, "replaceNewlines", false);
-		boolean cdataCleanup = bool(startElement, "cdataCleanup", false); // TODO: can we detect CData (nextEvent.getEventType() or isCData)
 		boolean newlinesArePresent = content.contains("\n");
 		if (newlinesArePresent) {
 			
+			// TODO: detect CDATA and assume strip pre- and postfix
+			boolean cdataCleanup = bool(startElement, "cdataCleanup", false); // TODO: can we detect CData (nextEvent.getEventType() or isCData)
 			if (cdataCleanup) {
 				// remove extra characters because of the way CDATA is formatted like so:
 				//     <comments replaceNewlines="true"><![CDATA[	
@@ -184,17 +184,16 @@ public class XML2YAML {
 				String indent = indent(currentNode.indent + 1);
 				content = indent + content.replace("\n", "\n" + indent);
 			}
-			
-			// TODO: detect CDATA and strip pre- and postfix
-			
+
+			// replace or keep newlines
+			boolean replaceNewlines = bool(startElement, "replaceNewlines", false);
 			if (replaceNewlines) {
 				writer.append(">");
 			}
 			else {
 				writer.append("|");
-			}
-			
-			// stripIndent
+			}			
+			// optional stripIndent
 			String stripIndent = attr(startElement, "stripIndent", null);
 			if (stripIndent != null) {
 				writer.append(stripIndent);

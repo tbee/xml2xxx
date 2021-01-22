@@ -15,11 +15,11 @@
 		<log4j.version>2.12.1</log4j.version>
 		<junit.jupiter.version>5.3.1</junit.jupiter.version>
 	</properties>
-	
+
 	<modules>
 		<module>xml2yaml</module>
 	</modules>
-	
+
 	<dependencyManagement>
 		<dependencies>
 
@@ -28,22 +28,18 @@
 				<artifactId>commons-cli</artifactId>
 				<version>1.4</version>
 			</dependency>
+
 			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>30.0-jre</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>3.8.1</version>
+				<groupId>org.yaml</groupId>
+				<artifactId>snakeyaml</artifactId>
+				<version>1.27</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>1.7.28</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-slf4j-impl</artifactId>
@@ -89,4 +85,5 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-	</build></project>
+	</build>
+</project>

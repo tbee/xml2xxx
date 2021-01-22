@@ -1,55 +1,53 @@
 package org.tbee.xml2yaml;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
 
 public class XML2YAMLTest {
 
 	@Test
 	public void sequenceOfScalars() {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("sequenceOfScalars"), outputStream);
-		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("sequenceOfScalars:\n" + yaml + "\n==============================");
+		Object object = convert("sequenceOfScalars");
 	}
 
 	@Test
 	public void mappingScalarsToScalars() {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("mappingScalarsToScalars"), outputStream);
-		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("mappingScalarsToScalars:\n" + yaml + "\n==============================");
+		Object object = convert("mappingScalarsToScalars");
 	}
 
 	@Test
 	public void mappingScalarsToSequences() {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("mappingScalarsToSequences"), outputStream);
-		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("mappingScalarsToSequences:\n" + yaml + "\n==============================");
+		Object object = convert("mappingScalarsToSequences");
 	}
 
 	@Test
 	public void sequenceOfMappings() {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("sequenceOfMappings"), outputStream);
-		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("sequenceOfMappings:\n" + yaml + "\n==============================");
+		Object object = convert("sequenceOfMappings");
 	}
 
 	@Test
 	public void fullLengthExample() {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML("fullLengthExample"), outputStream);
-		String yaml = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-		System.out.println("fullLengthExample:\n" + yaml + "\n==============================");
+		Object object = convert("fullLengthExample");
 	}
 
 	// TODO: test key="..." 
-	
+
+	private Object convert(String filename) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		new XML2YAML().convert(openXML(filename), outputStream);
+		String yamlStr = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+		Yaml yaml = new Yaml();
+		Object obj = yaml.load(new ByteArrayInputStream(yamlStr.getBytes()));
+		System.out.println(filename + ":\n" + yamlStr
+				+ "\n" + obj
+				+ "\n==============================");
+		return obj;
+	}
 	private InputStream openXML(String filename) {
 		String name = this.getClass().getSimpleName() + "_"  + filename + ".xml";
 		InputStream inputStream = this.getClass().getResourceAsStream(name);

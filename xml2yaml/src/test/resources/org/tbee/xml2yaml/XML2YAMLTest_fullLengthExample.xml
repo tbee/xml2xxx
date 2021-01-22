@@ -5,7 +5,7 @@
 		<given>Chris</given>
 		<family>Dumars</family>
 		<address>
-			<lines stripIndent="6+" cdataCleanup="true"><![CDATA[
+			<lines cdataCleanup="true"><![CDATA[
 				458 Walkman Dr.
 				Suite #292
 			]]></lines>

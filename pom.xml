@@ -21,6 +21,7 @@
 	<modules>
 		<module>xml2yaml</module>
 		<module>xml2yaml-maven-plugin</module>
+		<module>xml2yaml-application</module>
 	</modules>
 
 	<dependencyManagement>

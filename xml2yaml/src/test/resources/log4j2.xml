@@ -1,0 +1,18 @@
+<Configuration status="info"> 
+    <Appenders> 
+     	<Console name="Stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5level %l {%X{context}} - %msg%n"/> 
+    	</Console>
+        <File name="File" fileName="xml2yaml.log"> 
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %l {%X{context}} - %msg%n"/>
+            <Append>false</Append> 
+        </File> 
+    </Appenders> 
+    <Loggers> 
+        <Root level="WARN">
+            <AppenderRef ref="Stdout"/> 
+            <AppenderRef ref="File"/> 
+        </Root> 
+		<Logger name="org.tbee.xml2yaml" level="TRACE"/>		
+    </Loggers> 
+</Configuration>

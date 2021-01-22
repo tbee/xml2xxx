@@ -9,9 +9,12 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 public class XML2YAMLTest {
+	private static final Logger logger = LoggerFactory.getLogger(XML2YAMLTest.class);
 
 	@Test
 	public void sequenceOfScalars() {
@@ -75,23 +78,26 @@ public class XML2YAMLTest {
 
 	// TODO: test key="..." 
 
-	private Object convert(String filename) {
+	private Object convert(String testname) {
+		
+		// open input
+		String resourceName = this.getClass().getSimpleName() + "_"  + testname + ".xml";
+		InputStream inputStream = this.getClass().getResourceAsStream(resourceName);
+		if (inputStream == null) {
+			throw new RuntimeException("Resource not found: " + resourceName);
+		}
+		
+		// convert
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		new XML2YAML().convert(openXML(filename), outputStream);
+		new XML2YAML().convert(inputStream, outputStream);
+		
+		// parse as yaml
 		String yamlStr = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
 		Yaml yaml = new Yaml();
-		Object obj = yaml.load(new ByteArrayInputStream(yamlStr.getBytes()));
-		System.out.println(filename + ":\n" + yamlStr
+		Object obj = yaml.load(new ByteArrayInputStream(yamlStr.getBytes()));		
+		logger.trace(resourceName + ":\n" + yamlStr
 				+ "\n" + obj
 				+ "\n==============================");
 		return obj;
-	}
-	private InputStream openXML(String filename) {
-		String name = this.getClass().getSimpleName() + "_"  + filename + ".xml";
-		InputStream inputStream = this.getClass().getResourceAsStream(name);
-		if (inputStream == null) {
-			throw new RuntimeException("Resource not found: " + name);
-		}
-		return inputStream;
 	}
 }

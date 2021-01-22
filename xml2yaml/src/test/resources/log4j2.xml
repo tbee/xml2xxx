@@ -13,6 +13,6 @@
             <AppenderRef ref="Stdout"/> 
             <AppenderRef ref="File"/> 
         </Root> 
-		<Logger name="org.tbee.xml2yaml" level="TRACE"/>		
+		<Logger name="org.tbee.xml2yaml" level="DEBUG"/>		
     </Loggers> 
 </Configuration>

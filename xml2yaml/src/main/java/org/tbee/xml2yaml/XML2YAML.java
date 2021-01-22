@@ -64,7 +64,6 @@ public class XML2YAML {
 			XMLEventReader reader = xmlInputFactory.createXMLEventReader(inputStream);
 			while (reader.hasNext()) {
 			    XMLEvent nextEvent = reader.nextEvent();
-	        	System.out.println("!!!!eventType=" + nextEvent.getEventType());
 			    
 			    // setup a new node
 			    if (nextEvent.isStartElement()) {				    
@@ -158,12 +157,33 @@ public class XML2YAML {
 	private void content(String content, StartElement startElement, XMLEvent contentEvent, Node currentNode, Writer writer) throws Exception {
 		
 		// replaceNewlines
-		boolean replaceNewlines = Boolean.parseBoolean(attr(startElement, "replaceNewlines", "false"));
+		boolean replaceNewlines = bool(startElement, "replaceNewlines", false);
+		boolean cdataCleanup = bool(startElement, "cdataCleanup", false); // TODO: can we detect CData (nextEvent.getEventType() or isCData)
 		boolean newlinesArePresent = content.contains("\n");
 		if (newlinesArePresent) {
-			content = content.stripIndent(); // https://mkyong.com/java/java-multi-line-string-text-blocks/
-			String indent = indent(currentNode.indent + 1);
-			content = indent + content.replace("\n", "\n" + indent);
+			
+			if (cdataCleanup) {
+				// remove extra characters because of the way CDATA is formatted like so:
+				//     <comments replaceNewlines="true"><![CDATA[	
+				//         Late afternoon is best.
+				//         Backup contact is Nancy
+				//         Billsmer @ 338-4338.
+				//    ]]></comments>
+				// 
+				// There are possible spaces plus a newline after the CDATA-start,
+				// and a newline plus white spaces before the CDATA-end
+				content = content
+						.replaceAll("^\\s*\n", "") // preceding whitespace + first newline
+						.replaceAll("\n\\s*$", ""); // last newline + trailing whitespace
+				
+				// strip prefixes 
+				// TODO: replace with custom code so it can run on Java 11
+				content = content.stripIndent();
+				
+				// re-indent
+				String indent = indent(currentNode.indent + 1);
+				content = indent + content.replace("\n", "\n" + indent);
+			}
 			
 			// TODO: detect CDATA and strip pre- and postfix
 			
@@ -179,6 +199,9 @@ public class XML2YAML {
 			if (stripIndent != null) {
 				writer.append(stripIndent);
 			}
+			
+			// start on a new line
+			writer.append("\n");
 		}
 		
 		
@@ -193,9 +216,16 @@ public class XML2YAML {
 	 * 
 	 */
 	private String attr(StartElement startElement, String name, String defaultValue) {
-    	Attribute idAttribute = startElement.getAttributeByName(new QName(name));
-		String value = (idAttribute == null ? defaultValue : idAttribute.getValue());
+    	Attribute attribute = startElement.getAttributeByName(new QName(name));
+		String value = (attribute == null ? defaultValue : attribute.getValue());
 		return value;
+	}
+	
+	/*
+	 * This will check for a true or false value, or else jsut being present is a true
+	 */
+	private boolean bool(StartElement startElement, String name, boolean defaultValue) {
+		return Boolean.parseBoolean(attr(startElement, name, "" + defaultValue));
 	}
 	
 	/*

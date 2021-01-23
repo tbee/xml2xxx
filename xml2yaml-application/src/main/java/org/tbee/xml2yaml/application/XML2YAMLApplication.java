@@ -51,7 +51,7 @@ public class XML2YAMLApplication {
 	
 			// create the Options
 			Options options = new Options();
-			options.addOption( Option.builder("h")
+			options.addOption( Option.builder("?")
 					.longOpt("help")
 			        .desc("show help")
 			        .build());
@@ -59,13 +59,13 @@ public class XML2YAMLApplication {
 					.longOpt("out")
 			        .desc("file to write to")
 			        .hasArg()
-			        .argName("FILE")
+			        .argName("YAML-FILE")
 			        .build());
 
 		    // parse the command line arguments
 		    CommandLine commandLine = parser.parse( options, args );
 		    if (commandLine.hasOption("help")) {
-		        new HelpFormatter().printHelp("java -jar xml2yaml.jar [OPTIONS] [FILE]", options);
+		        new HelpFormatter().printHelp("java -jar xml2yaml.exe.jar [OPTIONS] [XML-FILE]\nPer default stdin and stdout is used, so xml2yaml can be used in a pipe.", options);
 		        System.exit(1);
 		    }
 		    String[] remainingArgs = commandLine.getArgs();		    

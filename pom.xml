@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.tbee.xml2xxx</groupId>
 	<artifactId>xml2xxx</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>pom</packaging>
 	<name>XML2XXX - converting XML to other formats, like YAML</name>
 	<description>XML2XXX - converting XML to other formats, like YAML</description>

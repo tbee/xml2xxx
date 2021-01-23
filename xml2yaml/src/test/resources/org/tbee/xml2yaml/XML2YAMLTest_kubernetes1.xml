@@ -1,0 +1,62 @@
+<xml2yaml>
+	<apiVersion>apps/v1</apiVersion>
+	<kind>Deployment</kind>
+	<metadata>
+		<name>nginx-deployment</name>
+		<labels>
+			<app>nginx</app>
+		</labels>
+	</metadata>
+	<spec>
+		<replicas>3</replicas>
+		<selector>
+			<matchLabels>
+				<app>nginx</app>
+			</matchLabels>
+		</selector>
+		<template>
+			<metadata>
+				<labels>
+					<app>nginx</app>
+				</labels>
+			</metadata>
+			<spec>
+				<containers>
+					<_>
+						<name>nginx</name>
+						<image>nginx:1.14.2</image>
+						<ports>
+							<_>
+								<containerPort>80</containerPort>
+							</_>
+						</ports>
+					</_>
+				</containers>
+			</spec>
+		</template>
+	</spec>
+</xml2yaml>
+
+<!-- Outputted YAML: 
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: nginx-deployment
+  labels: 
+    app: nginx
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: nginx
+  template: 
+    metadata: 
+      labels: 
+        app: nginx
+    spec: 
+      containers: 
+        - name: nginx
+          image: nginx:1.14.2
+          ports: 
+            - containerPort: 80
+-->

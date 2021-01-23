@@ -87,6 +87,8 @@ As you can see
     * Use `cdataCleanup` to re-indent them correctly. The CDATA markers should be place as in the example.
     * Use `replaceNewlines` to put the correct YAML marker in place.
 
+It is important to note that XML2YAML uses no XSD for itself, you are free to write one for the specific XML you are using. Anyone care to write a XSD for Kubernetes?
+
 ## Maven
 For ease of use a maven plug in is available. The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-maven-plugin&g:org.tbee.xml2xxx).
 

@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>xml2yaml-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	
+
 	<prerequisites>
 		<maven>${maven.version}</maven>
 	</prerequisites>
@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xml2yaml</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
@@ -38,12 +44,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-compat</artifactId>
-			<version>${maven.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
 			<version>3.6.0</version>
@@ -56,13 +56,19 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-compat</artifactId>
+			<version>${maven.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.maven.plugin-testing</groupId>
 			<artifactId>maven-plugin-testing-harness</artifactId>
 			<version>3.3.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -133,7 +139,7 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
- 			</plugins>
+			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
@@ -158,6 +164,6 @@
 				</executions>
 			</plugin>
 		</plugins>
- 	</build>
-	
+	</build>
+
 </project>

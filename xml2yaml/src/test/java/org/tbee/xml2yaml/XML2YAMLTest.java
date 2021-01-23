@@ -76,6 +76,13 @@ public class XML2YAMLTest {
 		Assert.assertEquals("458 Walkman Dr.\nSuite #292\n", addressMap.get("lines"));
 	}
 
+
+	@Test
+	public void kubernetes1() {
+		@SuppressWarnings("unchecked")
+		Map<String, Object> map = (Map<String, Object>) convert("kubernetes1");
+	}
+
 	// TODO: test key="..." 
 
 	private Object convert(String testname) {

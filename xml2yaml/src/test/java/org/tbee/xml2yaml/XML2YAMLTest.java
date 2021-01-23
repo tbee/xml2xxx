@@ -2,7 +2,7 @@ package org.tbee.xml2yaml;
 
 /*-
  * #%L
- * TECL
+ * XML2XXX
  * %%
  * Copyright (C) 2020 - 2021 Tom Eugelink
  * %%

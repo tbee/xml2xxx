@@ -1,5 +1,25 @@
 package org.tbee.xml2yaml;
 
+/*-
+ * #%L
+ * TECL
+ * %%
+ * Copyright (C) 2020 - 2021 Tom Eugelink
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -19,17 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * https://yaml.org/spec/1.2/spec.html
- * 
- * https://www.reddit.com/r/ansible/comments/5jhff3/when_to_use_dash_in_yaml/
- *   - symbol denotes the start of a new array item
- *
- * https://stackoverflow.com/questions/15540635/what-is-the-use-of-the-pipe-symbol-in-yaml
- *   | symbol maintains newlines, with the value following determines how many spaces to strip
- *   > symbol replaces newlines with a space
- *   
- * TODO
- * - multiline strings
+ * Convert an XML file to YAML 
  */
 public class XML2YAML {
 	private static final Logger logger = LoggerFactory.getLogger(XML2YAML.class);
@@ -37,6 +47,16 @@ public class XML2YAML {
 
 	// =============================================================================================================
 	// XML processing
+	//	 * https://yaml.org/spec/1.2/spec.html
+	//	 * 
+	//	 * https://www.reddit.com/r/ansible/comments/5jhff3/when_to_use_dash_in_yaml/
+	//	 *   - symbol denotes the start of a new array item
+	//	 *
+	//	 * https://stackoverflow.com/questions/15540635/what-is-the-use-of-the-pipe-symbol-in-yaml
+	//	 *   | symbol maintains newlines, with the value following determines how many spaces to strip
+	//	 *   > symbol replaces newlines with a space
+	//	 *   
+	//	 * TODO
 	
 	/**
 	 * 

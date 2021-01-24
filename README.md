@@ -116,7 +116,9 @@ For ease of use a maven plug in is available. The most recent version can be fou
 
 ## Command line
 The functionality is also available on the command line as an executable jar.
-* Via stdin and stdout: `cat kubernetes.xml | java -jar xml2yaml.exe.jar > kubernetes.yaml`.
+* Via stdin and stdout: `cat kubernetes.xml | java -jar xml2yaml-application.jar > kubernetes.yaml`.
 * Via a command line parameter(s): 
-    * `java -jar xml2yaml.exe.jar kubernetes.xml > kubernetes.yaml`.
-    * `java -jar xml2yaml.exe.jar -out kubernetes.yaml kubernetes.xml`.
+    * `java -jar xml2yaml-application.jar kubernetes.xml > kubernetes.yaml`.
+    * `java -jar xml2yaml-application.jar -out kubernetes.yaml kubernetes.xml`.
+    
+You can of course rename xml2yaml-application.jar to a more practical xml2yaml.jar, but within the Maven project that conflicts with the engine's jar.

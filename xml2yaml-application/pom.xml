@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.tbee.xml2xxx</groupId>
 		<artifactId>xml2xxx</artifactId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 	</parent>
 	<artifactId>xml2yaml-application</artifactId>
 
@@ -44,6 +44,7 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!-- https://stackoverflow.com/questions/38482839/maven-assembly-plugin-how-to-use-appendassemblyid -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
@@ -55,7 +56,6 @@
 							<mainClass>org.tbee.xml2yaml.application.XML2YAMLApplication</mainClass>
 						</manifest>
 					</archive>
-					<finalName>xml2yaml-${project.version}.exe</finalName>
 					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>

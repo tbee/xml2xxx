@@ -4,6 +4,7 @@ YAML is very sensitive to indenting and that often is a source of frustration fo
 For example this XML input:
 
 ```xml
+<?xml version="1.0" encoding="UTF-8"?>
 <xml2yaml>
 	<invoice>34843</invoice>
 	<date>2001-01-23</date>
@@ -84,7 +85,7 @@ As you can see
 * If you cannot write a YAML key as an XML tag, for example because it requires a space, use the 'key' attribute like `<tag key="YAML key name">`.
 * The item markers (minus characters) in YAML are represented by underscore tags in XML.
 * Multi line text are best done using CDATA blocks in XML;
-    * Use `cdataCleanup` to re-indent them correctly. The CDATA markers should be place as in the example.
+    * Use `cdataCleanup` to re-indent them correctly. The CDATA markers should be placed as in the example.
     * Use `replaceNewlines` to put the correct YAML marker in place.
 
 It is important to note that XML2YAML uses no XSD for itself, you are free to write one for the specific XML you are using. Anyone care to write a XSD for Kubernetes?
@@ -111,4 +112,10 @@ For ease of use a maven plug in is available. The most recent version can be fou
 ```
 
 * inputFile will denote the XML file
-* outputFile is the YAML file, if undefined the inputfile with '.xml' replaced with '.yaml'
+* outputFile is the YAML file, if undefined; the inputfile where '.xml' is replaced with '.yaml'
+
+## Command line
+The functionality is also available on the command linem as an executable jar.
+* Via stdin and stdout: `cat kubernetes.xml | java -jar xml2yaml.exe.jar > kubernetes.yaml`.
+* Via a command line parameter: `java -jar xml2yaml.exe.jar kubernetes.xml > kubernetes.yaml`.
+* Or only via a command line parameter: `java -jar xml2yaml.exe.jar -out kubernetes.yaml kubernetes.xml`.

@@ -28,7 +28,6 @@ import java.io.File;
 
 import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Rule;
-import org.junit.Test;
 
 public class XML2YAMLMojoTest
 {
@@ -49,7 +48,7 @@ public class XML2YAMLMojoTest
     /**
      * @throws Exception if any
      */
-    @Test
+    //@Test
     public void testSomething()
     throws Exception
     {

@@ -61,7 +61,7 @@ public class XML2YAMLMojoTest // extends AbstractMojoTestCase
         assertNotNull(mojo);
         mojo.execute();
 
-        File inputFile = (File) rule.getVariableValueFromObject(mojo, "input");
+        File inputFile = (File) rule.getVariableValueFromObject(mojo, "inputFile");
         assertNotNull(inputFile);
         assertTrue(inputFile.exists());
     }

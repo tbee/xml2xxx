@@ -24,22 +24,27 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.tbee.xml2xxx</groupId>
-	<artifactId>xml2yaml-maven-plugin-test</artifactId>
+	<groupId>dummy</groupId>
+	<artifactId>dummy</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>xml2yaml</artifactId>
-				<!--  TBEERNOT should be default goal -->
-				<goals>
-					<goal>convert</goal>
-				</goals>
+ 			<plugin>
+				<groupId>org.tbee.xml2xxx</groupId>
+				<artifactId>xml2yaml-maven-plugin</artifactId>
+				<version>0.2.0</version>
 				<configuration>
-					<input>target/test-harness/project-to-test/test.xml</input>
+					<inputFile>target/test-harness/project-to-test/test.xml</inputFile>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>convert</goal>						
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

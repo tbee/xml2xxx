@@ -28,6 +28,7 @@ import java.io.File;
 
 import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Rule;
+import org.junit.Test;
 
 public class XML2YAMLMojoTest // extends AbstractMojoTestCase
 {
@@ -48,15 +49,15 @@ public class XML2YAMLMojoTest // extends AbstractMojoTestCase
     /**
      * @throws Exception if any
      */
-//    @Test
+    @Test
     public void testSomething()
     throws Exception
     {
-        File basedir = new File("target/test-classes/project-to-test");
-        assertNotNull(basedir);
-        assertTrue(basedir.exists());
+        File pom = new File("src/test/resources/project-to-test/pom.xml");
+        assertNotNull( pom );
+        assertTrue( pom.exists() );
 
-        XML2YAMLMojo mojo = (XML2YAMLMojo)rule.lookupConfiguredMojo(basedir, "convert");
+        XML2YAMLMojo mojo = (XML2YAMLMojo)rule.lookupMojo("convert", pom);
         assertNotNull(mojo);
         mojo.execute();
 

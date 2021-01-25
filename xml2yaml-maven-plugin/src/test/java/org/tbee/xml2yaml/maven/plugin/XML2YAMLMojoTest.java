@@ -30,7 +30,7 @@ import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class XML2YAMLMojoTest // extends AbstractMojoTestCase
+public class XML2YAMLMojoTest
 {
     @Rule
     public MojoRule rule = new MojoRule()

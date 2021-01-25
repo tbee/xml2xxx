@@ -80,7 +80,6 @@ comments: >
   Billsmer @ 338-4338.
 ```
 
-As you can see
 * The XML tag names match the keys in YAML.
 * If you cannot write a YAML key as an XML tag, for example because it requires a space, use the 'key' attribute like `<tag key="YAML key name">`.
 * The item markers (minus characters) in YAML are represented by underscore tags in XML.
@@ -91,7 +90,7 @@ As you can see
 It is important to note that XML2YAML uses no XSD for itself, you are free to write one for the specific XML you are using. Anyone care to write a XSD for Kubernetes?
 
 ## Maven
-For ease of use a maven plug in is available. The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-maven-plugin&g:org.tbee.xml2xxx).
+For ease of use a maven plugin is available. The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-maven-plugin&g:org.tbee.xml2xxx).
 
 ```xml
 <plugin>

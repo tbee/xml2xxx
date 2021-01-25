@@ -115,7 +115,7 @@ For ease of use a maven plug in is available. The most recent version can be fou
 * outputFile is the YAML file, if undefined; the inputfile where '.xml' is replaced with '.yaml'
 
 ## Command line
-The functionality is also available on the command line as an executable jar.
+The functionality is also available on the command line as an executable jar. The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-application&g:org.tbee.xml2xxx).
 * Via stdin and stdout: `cat kubernetes.xml | java -jar xml2yaml-application.jar > kubernetes.yaml`.
 * Via a command line parameter(s): 
     * `java -jar xml2yaml-application.jar kubernetes.xml > kubernetes.yaml`.

@@ -12,10 +12,10 @@ For example this XML input:
 		<given>Chris</given>
 		<family>Dumars</family>
 		<address>
-			<lines cdataCleanup="true"><![CDATA[
+			<lines>
 				458 Walkman Dr.
 				Suite #292
-			]]></lines>
+			</lines>
 			<city>Royal Oak</city>
 			<state>MI</state>
 			<postal>48046</postal>
@@ -38,11 +38,11 @@ For example this XML input:
 	</product>
 	<tax>251.42</tax>
 	<total>4443.52</total>
-	<comments replaceNewlines="true" cdataCleanup="true"><![CDATA[
+	<comments replaceNewlines="true">
 		Late afternoon is best.
 		Backup contact is Nancy
 		Billsmer @ 338-4338.
-	]]></comments>
+	</comments>
 </xml2yaml>
 
 ```
@@ -84,8 +84,8 @@ As you can see
 * The XML tag names match the keys in YAML.
 * If you cannot write a YAML key as an XML tag, for example because it requires a space, use the 'key' attribute like `<tag key="YAML key name">`.
 * The item markers (minus characters) in YAML are represented by underscore tags in XML.
-* Multi line text are best done using CDATA blocks in XML;
-    * Use `cdataCleanup` to re-indent them correctly. The CDATA markers should be placed as in the example.
+* Multi line text having some processing options:
+    * Use `reindent='false'` if you want re-indenting not to happen.
     * Use `replaceNewlines` to put the correct YAML marker in place.
 
 It is important to note that XML2YAML uses no XSD for itself, you are free to write one for the specific XML you are using. Anyone care to write a XSD for Kubernetes?

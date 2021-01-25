@@ -74,6 +74,7 @@ public class XML2YAML {
 			// Parse the xml
 		    StartElement startElement = null;
 			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+			xmlInputFactory.setProperty("javax.xml.stream.isCoalescing", true);  // decode entities into one string
 			XMLEventReader reader = xmlInputFactory.createXMLEventReader(inputStream);
 			while (reader.hasNext()) {
 			    XMLEvent nextEvent = reader.nextEvent();
@@ -174,14 +175,14 @@ public class XML2YAML {
 		if (newlinesArePresent) {
 			
 			// TODO: detect CDATA and assume strip pre- and postfix
-			boolean cdataCleanup = bool(startElement, "cdataCleanup", false); // TODO: can we detect CData (nextEvent.getEventType() or isCData)
-			if (cdataCleanup) {
+			boolean reindent = bool(startElement, "reindent", true);
+			if (reindent) {
 				// remove extra characters because of the way CDATA is formatted like so:
-				//     <comments replaceNewlines="true"><![CDATA[	
+				//     <comments replaceNewlines="true">	
 				//         Late afternoon is best.
 				//         Backup contact is Nancy
 				//         Billsmer @ 338-4338.
-				//    ]]></comments>
+				//    </comments>
 				// 
 				// There are possible spaces plus a newline after the CDATA-start,
 				// and a newline plus white spaces before the CDATA-end

@@ -25,10 +25,10 @@
 		<given>Chris</given>
 		<family>Dumars</family>
 		<address>
-			<lines cdataCleanup="true"><![CDATA[
+			<lines>
 				458 Walkman Dr.
 				Suite #292
-			]]></lines>
+			</lines>
 			<city>Royal Oak</city>
 			<state>MI</state>
 			<postal>48046</postal>
@@ -51,11 +51,11 @@
 	</product>
 	<tax>251.42</tax>
 	<total>4443.52</total>
-	<comments replaceNewlines="true" cdataCleanup="true"><![CDATA[
+	<comments replaceNewlines="true">
 		Late afternoon is best.
 		Backup contact is Nancy
 		Billsmer @ 338-4338.
-	]]></comments>
+	</comments>
 </xml2yaml>
 
 <!-- Outputted YAML:

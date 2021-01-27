@@ -43,6 +43,7 @@ For example this XML input:
 		Backup contact is Nancy
 		Billsmer @ 338-4338.
 	</comments>
+	<_ key="brilliant idea">Allowing spaces in keys</_> 
 </xml2yaml>
 
 ```
@@ -78,14 +79,15 @@ comments: >
   Late afternoon is best.
   Backup contact is Nancy
   Billsmer @ 338-4338.
+brilliant idea: Allowing spaces in keys 
 ```
 
 * The XML tag names match the keys in YAML.
-* If you cannot write a YAML key as an XML tag, for example because it requires a space, use the 'key' attribute like `<tag key="YAML key name">`.
 * The item markers (minus characters) in YAML are represented by underscore tags in XML.
+* If you cannot write a YAML key as an XML tag, for example because it requires a space, use the 'key' attribute. Key will replace the tag name, so any tag name is okay... Then why not use the minimal one: `<_ key="YAML key name">`
 * Multi line text having some processing options:
-    * Use `reindent='false'` if you want re-indenting not to happen.
-    * Use `replaceNewlines` to put the correct YAML marker in place.
+    * Use `reindent="false"` if you want re-indenting not to happen.
+    * Use `replaceNewlines="true"` to put the correct YAML marker in place.
 
 It is important to note that XML2YAML uses no XSD for itself, you are free to write one for the specific XML you are using. Anyone care to write a XSD for Kubernetes?
 

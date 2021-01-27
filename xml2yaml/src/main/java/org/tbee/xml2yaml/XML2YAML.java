@@ -87,6 +87,10 @@ public class XML2YAML {
 			        startElement = nextEvent.asStartElement();
 			        currentNode.name = startElement.getName().getLocalPart();
 			        currentNode.isXml2Yaml = "xml2yaml".equals(currentNode.name);
+					String key = attr(startElement, "key", currentNode.name); // key can overwrite name as the yaml key
+					if (key != null) {
+						currentNode.name = key;
+					}
 				    currentNode.isItem = "_".equals(currentNode.name);
 					currentNode.indent = stack.size() - 2;
 					currentNode.firstPrint = firstPrint;
@@ -133,7 +137,6 @@ public class XML2YAML {
 	 * 
 	 */
 	private void startElement(StartElement startElement, Node currentNode, Node parentNode, Writer writer) throws Exception {
-		String key = attr(startElement, "key", currentNode.name); // key can overwrite name as the yaml key
 		String id = attr(startElement, "id", null); // id can be referenced by ref
 		String ref = attr(startElement, "ref", null); // ref can reference an id
 	    
@@ -154,7 +157,7 @@ public class XML2YAML {
     	}
     	// normal tag
     	else {
-    		writer.append(key);
+    		writer.append(currentNode.name);
     		writer.append(": ");
         	if (id != null) {
         		writer.append("&" + id);

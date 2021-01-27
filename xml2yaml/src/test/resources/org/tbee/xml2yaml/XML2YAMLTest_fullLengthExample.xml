@@ -56,6 +56,7 @@
 		Backup contact is Nancy
 		Billsmer @ 338-4338.
 	</comments>
+	<_ key="brilliant idea">Allowing spaces in keys</_>
 </xml2yaml>
 
 <!-- Outputted YAML:
@@ -87,4 +88,5 @@ comments: >
   Late afternoon is best.
   Backup contact is Nancy
   Billsmer @ 338-4338.
+brilliant idea: Allowing spaces in keys  
 -->

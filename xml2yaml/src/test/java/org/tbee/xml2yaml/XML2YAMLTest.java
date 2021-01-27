@@ -86,7 +86,7 @@ public class XML2YAMLTest {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> map = (Map<String, Object>) convert("fullLengthExample");
 
-		Assert.assertEquals("Late afternoon is best. Backup contact is Nancy Billsmer @ 338-4338.", map.get("comments"));
+		Assert.assertEquals("Late afternoon is best. Backup contact is Nancy Billsmer @ 338-4338.\n", map.get("comments"));
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> billToMap = (Map<String, Object>) map.get("bill-to");

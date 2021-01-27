@@ -227,9 +227,11 @@
 				<configuration>
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+<!-- in case of release problems without reason 					
 					<keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
 					<keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+ -->					
 				</configuration>
 			</plugin>
 		</plugins>

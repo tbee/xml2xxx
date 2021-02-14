@@ -70,4 +70,40 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>graalvm</id>
+			<activation>
+				<property>
+					<name>env.GRAALVM_HOME</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<!-- https://docs.gluonhq.com/#_the_gluon_client_plugin_for_maven -->
+					<plugin>
+						<groupId>com.gluonhq</groupId>
+						<artifactId>client-maven-plugin</artifactId>
+						<version>0.1.36</version>
+						<configuration>
+							<mainClass>org.tbee.xml2yaml.application.XML2YAMLApplication</mainClass>
+							<nativeImageArgs>
+								<nativeImageArg>--allow-incomplete-classpath</nativeImageArg>
+							</nativeImageArgs>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-exe</id>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+									<goal>package</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

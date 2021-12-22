@@ -100,7 +100,7 @@ The easiest way is to use [jbang](https://www.jbang.dev/) with Maven coordinates
     * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 kubernetes.xml > kubernetes.yaml`.
     * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 -out kubernetes.yaml kubernetes.xml`.
     
-The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-application&g:org.tbee.xml2xxx).
+The most recent version can be found on [Maven Central](https://search.maven.org/search?q=g:org.tbee.xml2xxx).
 
 ## java -jar
 XML2YAM is available as an executable jar.
@@ -112,7 +112,7 @@ XML2YAM is available as an executable jar.
     
 You can of course rename xml2yaml-application-jar-with-dependencies.jar to a more practical xml2yaml.jar, but when developing that conflicts with the engine's jar.
 
-The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-application&g:org.tbee.xml2xxx).
+The most recent version can be found on [Maven Central](https://search.maven.org/search?q=g:org.tbee.xml2xxx).
 
 ## Maven
 For use during build a maven plugin is available.
@@ -140,5 +140,5 @@ For use during build a maven plugin is available.
 
 (No I don't do Gradle, I think it is a great idea which was implemented wrong.)
 
-The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-maven-plugin&g:org.tbee.xml2xxx).
+The most recent version can be found on [Maven Central](https://search.maven.org/search?q=g:org.tbee.xml2xxx).
 

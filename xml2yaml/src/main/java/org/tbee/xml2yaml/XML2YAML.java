@@ -1,4 +1,4 @@
-package org.tbee.xml2yaml;
+ package org.tbee.xml2yaml;
 
 /*-
  * #%L
@@ -84,6 +84,11 @@ public class XML2YAML {
 				    Node parentNode = stack.peek();
 				    Node currentNode = new Node();
 				    
+				    if (parentNode != null && parentNode.name != null && !parentNode.isXml2Yaml && !parentNode.isItem && !parentNode.colonPrinted) {
+			    		writer.append(": ");
+			    		parentNode.colonPrinted = true;
+				    }
+				    
 			        startElement = nextEvent.asStartElement();
 			        currentNode.name = startElement.getName().getLocalPart();
 			        currentNode.isXml2Yaml = "xml2yaml".equals(currentNode.name);
@@ -131,6 +136,7 @@ public class XML2YAML {
 		Node previousNode = null;
 		int indent;
 		boolean firstPrint = true;
+		boolean colonPrinted = false;
 	}
 
 	/*
@@ -158,12 +164,13 @@ public class XML2YAML {
     	// normal tag
     	else {
     		writer.append(currentNode.name);
-    		writer.append(": ");
         	if (id != null) {
-        		writer.append("&" + id);
+        		writer.append(": &" + id);
+        		currentNode.colonPrinted = true;
         	}
         	if (ref != null) {
-        		writer.append("*" + ref);
+        		writer.append(": *" + ref);
+        		currentNode.colonPrinted = true;
         	}
     	}
 	}
@@ -172,7 +179,15 @@ public class XML2YAML {
 	 * 
 	 */
 	private void content(String content, StartElement startElement, XMLEvent contentEvent, Node currentNode, Writer writer) throws Exception {
-		
+		String id = attr(startElement, "id", null); // id can be referenced by ref
+		String ref = attr(startElement, "ref", null); // ref can reference an id
+	    
+    	// print a colon prior to the contact (a tag may not have content)
+    	if (!currentNode.isItem && !currentNode.colonPrinted) {
+    		writer.append(": ");
+    		currentNode.colonPrinted = true;
+    	}
+    	
 		// replaceNewlines
 		boolean newlinesArePresent = content.contains("\n");
 		if (newlinesArePresent) {

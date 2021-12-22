@@ -75,10 +75,14 @@ public class XML2YAMLTest {
 		
 		@SuppressWarnings("unchecked")
 		Map<String, Object> map = (Map<String, Object>) list.get(1);
-		Assert.assertEquals(3, map.size());
+		Assert.assertEquals(4, map.size());
 		Assert.assertEquals("Sammy Sosa", map.get("name"));
 		Assert.assertEquals(63, map.get("hr"));
 		Assert.assertEquals(0.288, map.get("avg"));
+		Assert.assertTrue(map.containsKey("enum"));
+		List<Object> enumList = (List<Object>) map.get("enum");
+		System.out.println(enumList);
+		Assert.assertEquals("important", enumList.get(0));
 	}
 
 	@Test
@@ -120,11 +124,10 @@ public class XML2YAMLTest {
 		
 		// parse as yaml
 		String yamlStr = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+		logger.trace(resourceName + ":\n" + yamlStr);
 		Yaml yaml = new Yaml();
 		Object obj = yaml.load(new ByteArrayInputStream(yamlStr.getBytes()));		
-		logger.trace(resourceName + ":\n" + yamlStr
-				+ "\n" + obj
-				+ "\n==============================");
+		logger.trace(obj + "\n==============================");
 		return obj;
 	}
 }

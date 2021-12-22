@@ -27,7 +27,12 @@
 	<_>
 		<name>Sammy Sosa</name>	
 		<hr>63</hr>
-		<avg>0.288</avg>	
+		<avg>0.288</avg>
+		<enum>
+			<_>
+				<important/>
+			</_>
+		</enum>	
 	</_>
 </xml2yaml>
 
@@ -38,4 +43,5 @@
 - name: Sammy Sosa
   hr: 63
   avg: 0.288
+  important
 -->

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.tbee.xml2xxx</groupId>
 		<artifactId>xml2xxx</artifactId>
-		<version>0.4.0-SNAPSHOT</version>
+		<version>0.5.0</version>
 	</parent>
 	<artifactId>xml2yaml-application</artifactId>
 
@@ -64,6 +64,24 @@
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- TBEERNOT: move to a profile under the presence of GRAALVM_HOME -->
+			<plugin>
+				<groupId>com.gluonhq</groupId>
+				<artifactId>client-maven-plugin</artifactId>
+				<version>0.1.36</version>
+				<configuration>
+					<mainClass>org.tbee.xml2yaml.application.XML2YAMLApplication</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
 						</goals>
 					</execution>
 				</executions>

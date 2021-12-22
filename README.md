@@ -91,8 +91,31 @@ brilliant idea: Allowing spaces in keys
 
 It is important to note that XML2YAML uses no XSD for itself, you are free to write one for the specific XML you are using. Anyone care to write a XSD for Kubernetes?
 
+
+## jbang
+The easiest way is to use [jbang](https://www.jbang.dev/) with Maven coordinates, which will download everything automatically from Maven central.
+* Via stdin and stdout:
+    * `cat kubernetes.xml | jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 > kubernetes.yaml`.
+* Via command line parameter(s): 
+    * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 kubernetes.xml > kubernetes.yaml`.
+    * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 -out kubernetes.yaml kubernetes.xml`.
+    
+The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-application&g:org.tbee.xml2xxx).
+
+## java -jar
+XML2YAM is available as an executable jar.
+* Via stdin and stdout:
+    * `cat kubernetes.xml | java -jar xml2yaml-application-jar-with-dependencies.jar > kubernetes.yaml`.
+* Via command line parameter(s): 
+    * `java -jar xml2yaml-application-jar-with-dependencies.jar kubernetes.xml > kubernetes.yaml`.
+    * `java -jar xml2yaml-application-jar-with-dependencies.jar -out kubernetes.yaml kubernetes.xml`.
+    
+You can of course rename xml2yaml-application-jar-with-dependencies.jar to a more practical xml2yaml.jar, but when developing that conflicts with the engine's jar.
+
+The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-application&g:org.tbee.xml2xxx).
+
 ## Maven
-For ease of use a maven plugin is available. The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-maven-plugin&g:org.tbee.xml2xxx).
+For use during build a maven plugin is available.
 
 ```xml
 <plugin>
@@ -115,11 +138,7 @@ For ease of use a maven plugin is available. The most recent version can be foun
 * inputFile will denote the XML file
 * outputFile is the YAML file, if undefined; the inputfile where '.xml' is replaced with '.yaml'
 
-## Command line
-The functionality is also available on the command line as an executable jar. The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-application&g:org.tbee.xml2xxx).
-* Via stdin and stdout: `cat kubernetes.xml | java -jar xml2yaml-application.jar > kubernetes.yaml`.
-* Via command line parameter(s): 
-    * `java -jar xml2yaml-application.jar kubernetes.xml > kubernetes.yaml`.
-    * `java -jar xml2yaml-application.jar -out kubernetes.yaml kubernetes.xml`.
-    
-You can of course rename xml2yaml-application.jar to a more practical xml2yaml.jar, but within the Maven project that conflicts with the engine's jar.
+(No I don't do Gradle, I think it is a great idea which was implemented wrong.)
+
+The most recent version can be found on [Maven Central](https://search.maven.org/search?q=a:xml2yaml-maven-plugin&g:org.tbee.xml2xxx).
+

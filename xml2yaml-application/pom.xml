@@ -1,11 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.tbee.xml2xxx</groupId>
 		<artifactId>xml2xxx</artifactId>
-		<version>0.5.0</version>
+		<version>1.1.0</version>
 	</parent>
 	<artifactId>xml2yaml-application</artifactId>
 
@@ -21,6 +19,7 @@
 			<artifactId>commons-cli</artifactId>
 		</dependency>
 
+<!-- use this when you want to debug, slf4j-nop for deployment (better for graalvm) 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
@@ -33,7 +32,12 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 		</dependency>
-
+ -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-nop</artifactId>
+		</dependency>
+ 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -70,30 +74,38 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
-	    <profile>
-	        <id>graalvm</id>
-	        <activation>
-	            <property>
-	                <name>env.GRAALVM_HOME</name>
-	            </property>
-	        </activation>
-	        <build>
-	        	<plugins>
+		<profile>
+			<id>graalvm</id>
+			<activation>
+				<property>
+					<name>env.GRAALVM_HOME</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<!-- https://docs.gluonhq.com/#_the_gluon_client_plugin_for_maven -->
 					<plugin>
 						<groupId>com.gluonhq</groupId>
 						<artifactId>client-maven-plugin</artifactId>
 						<version>0.1.36</version>
 						<configuration>
 							<mainClass>org.tbee.xml2yaml.application.XML2YAMLApplication</mainClass>
+							<reflectionList>
+								<list>org.slf4j.impl.StaticLoggerBinder.class</list>
+							</reflectionList>
+							<nativeImageArgs>
+								<nativeImageArg>--allow-incomplete-classpath</nativeImageArg>
+							</nativeImageArgs>
 						</configuration>
 						<executions>
 							<execution>
-								<id>make-assembly</id>
+								<id>make-exe</id>
 								<phase>package</phase>
 								<goals>
 									<goal>build</goal>
+									<goal>package</goal>
 								</goals>
 							</execution>
 						</executions>

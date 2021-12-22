@@ -95,10 +95,10 @@ It is important to note that XML2YAML uses no XSD for itself, you are free to wr
 ## jbang
 The easiest way is to use [jbang](https://www.jbang.dev/) with Maven coordinates, which will download everything automatically from Maven central.
 * Via stdin and stdout:
-    * `cat kubernetes.xml | jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 > kubernetes.yaml`.
+    * `cat kubernetes.xml | jbang org.tbee.xml2xxx:xml2yaml-application:1.2.1 > kubernetes.yaml`.
 * Via command line parameter(s): 
-    * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 kubernetes.xml > kubernetes.yaml`.
-    * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.0 -out kubernetes.yaml kubernetes.xml`.
+    * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.1 kubernetes.xml > kubernetes.yaml`.
+    * `jbang org.tbee.xml2xxx:xml2yaml-application:1.2.1 -out kubernetes.yaml kubernetes.xml`.
     
 The most recent version can be found on [Maven Central](https://search.maven.org/search?q=g:org.tbee.xml2xxx).
 

@@ -1,5 +1,7 @@
  package org.tbee.xml2yaml;
 
+import java.io.IOException;
+
 /*-
  * #%L
  * XML2XXX
@@ -83,11 +85,7 @@ public class XML2YAML {
 			    if (nextEvent.isStartElement()) {				    
 				    Node parentNode = stack.peek();
 				    Node currentNode = new Node();
-				    
-				    if (parentNode != null && parentNode.name != null && !parentNode.isXml2Yaml && !parentNode.isItem && !parentNode.colonPrinted) {
-			    		writer.append(": ");
-			    		parentNode.colonPrinted = true;
-				    }
+				    currentNode.parentNode = parentNode;
 				    
 			        startElement = nextEvent.asStartElement();
 			        currentNode.name = startElement.getName().getLocalPart();
@@ -100,6 +98,13 @@ public class XML2YAML {
 					currentNode.indent = stack.size() - 2;
 					currentNode.firstPrint = firstPrint;
 					
+				    // has the parent node gotten its colon?
+				    if (parentNode != null && parentNode.name != null && !parentNode.isXml2Yaml && !parentNode.isItem && !parentNode.colonPrinted) {
+				    	if (logger.isTraceEnabled()) logger.trace("Child node '" + currentNode.name +"' found, appending ':' to parent node '" + listParents(currentNode) + "'");
+				    	append(currentNode, writer, ": ");
+			    		parentNode.colonPrinted = true;
+				    }
+				    
 				    if (!currentNode.isXml2Yaml) {
 					    startElement(startElement, currentNode, parentNode, writer);
 					    firstPrint = currentNode.firstPrint;
@@ -134,6 +139,7 @@ public class XML2YAML {
 		boolean isItem = false;
 		boolean isXml2Yaml = false;
 		Node previousNode = null;
+		Node parentNode = null;
 		int indent;
 		boolean firstPrint = true;
 		boolean colonPrinted = false;
@@ -151,25 +157,28 @@ public class XML2YAML {
 	    }
 	    else {
 	    	if (!currentNode.firstPrint) {
-		    	writer.append("\n");		    	
+		    	append(currentNode, writer, "\n");		    	
 	    	}
 	    	currentNode.firstPrint = false;
-	    	writer.append(indent(currentNode.indent));
+	    	append(currentNode, writer, indent(currentNode.indent));
 	    }
 		
 	    // item tag
     	if (currentNode.isItem) {
-    		writer.append("- ");
+    		append(currentNode, writer, "- ");
     	}
     	// normal tag
     	else {
-    		writer.append(currentNode.name);
+	    	if (logger.isTraceEnabled()) logger.trace("Starting a new node '" + currentNode.name + "'" + (parentNode == null || parentNode.isXml2Yaml ? "" : " child of '" + listParents(currentNode) + "'"));
+    		append(currentNode, writer, currentNode.name);
         	if (id != null) {
-        		writer.append(": &" + id);
+		    	if (logger.isTraceEnabled()) logger.trace("Node '" + currentNode.name +"' has an id '" + id + "'");
+        		append(currentNode, writer, ": &" + id);
         		currentNode.colonPrinted = true;
         	}
         	if (ref != null) {
-        		writer.append(": *" + ref);
+		    	if (logger.isTraceEnabled()) logger.trace("Node '" + currentNode.name +"' has an reference '" + ref + "'");
+        		append(currentNode, writer, ": *" + ref);
         		currentNode.colonPrinted = true;
         	}
     	}
@@ -184,7 +193,8 @@ public class XML2YAML {
 	    
     	// print a colon prior to the contact (a tag may not have content)
     	if (!currentNode.isItem && !currentNode.colonPrinted) {
-    		writer.append(": ");
+	    	if (logger.isTraceEnabled()) logger.trace("Content found, appending ':' to node '" + listParents(currentNode) + "'");
+    		append(currentNode, writer, ": ");
     		currentNode.colonPrinted = true;
     	}
     	
@@ -215,24 +225,24 @@ public class XML2YAML {
 			// replace or keep newlines
 			boolean replaceNewlines = bool(startElement, "replaceNewlines", false);
 			if (replaceNewlines) {
-				writer.append(">");
+				append(currentNode, writer, ">");
 			}
 			else {
-				writer.append("|");
+				append(currentNode, writer, "|");
 			}			
 			// optional stripIndent
 			String stripIndent = attr(startElement, "stripIndent", null);
 			if (stripIndent != null) {
-				writer.append(stripIndent);
+				append(currentNode, writer, stripIndent);
 			}
 			
 			// start on a new line
-			writer.append("\n");
+			append(currentNode, writer, "\n");
 		}
 		
 		
 		// write
-		writer.append(content);
+		append(currentNode, writer, content);
 	}
 
 	/*
@@ -285,10 +295,24 @@ public class XML2YAML {
 		return Boolean.parseBoolean(attr(startElement, name, "" + defaultValue));
 	}
 	
-	/*
-	 * 
-	 */
+	/* */
 	private String indent(int n) {
 		return "  ".repeat(n);
+	}
+	
+	/* */
+	private String listParents(Node currentNode) {
+		String s = "";
+		while (currentNode.parentNode != null && currentNode.parentNode.name != null && !currentNode.parentNode.isXml2Yaml) {
+			s = currentNode.parentNode.name + (s.isEmpty()? "" : ".") + s;
+			currentNode = currentNode.parentNode;
+		}
+		return s;
+	}
+	
+	/* */
+	private void append(Node currentNode, Writer writer, String s) throws IOException {
+		if (logger.isTraceEnabled() && !s.isBlank()) logger.trace("> " + indent(currentNode.indent) + s.replaceAll("\n", "<newline>"));
+		writer.append(s);
 	}
 }

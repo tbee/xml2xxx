@@ -32,6 +32,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tbee.xml2yaml.XML2YAML;
@@ -55,6 +57,14 @@ public class XML2YAMLApplication {
 					.longOpt("help")
 			        .desc("show help")
 			        .build());
+			options.addOption( Option.builder("d")
+					.longOpt("debug")
+			        .desc("show info of the process, probably --out should be used as well")
+			        .build());
+			options.addOption( Option.builder("t")
+					.longOpt("trace")
+			        .desc("show more info of the process, probably --out should be used as well")
+			        .build());
 			options.addOption( Option.builder("o")
 					.longOpt("out")
 			        .desc("file to write to")
@@ -68,14 +78,23 @@ public class XML2YAMLApplication {
 		        new HelpFormatter().printHelp("java -jar xml2yaml.exe.jar [OPTIONS] [XML-FILE]\nPer default stdin and stdout is used, so xml2yaml can be used in a pipe.", options);
 		        System.exit(1);
 		    }
-		    String[] remainingArgs = commandLine.getArgs();		    
+		    String[] remainingArgs = commandLine.getArgs();	
+		    
+		    
+		    // determine output
+		    if (commandLine.hasOption("debug")) {
+		    	Configurator.setRootLevel(Level.DEBUG);
+		    }
+		    if (commandLine.hasOption("trace")) {
+		    	Configurator.setRootLevel(Level.TRACE);
+		    }
 		    
 		    // determine input
 		    InputStream inputStream = System.in;
 		    if (remainingArgs.length == 1) {
 			    File file = new File(remainingArgs[0]);
 			    if (!file.exists()) {
-			    	System.err.print("File does not exist: "  + file.getAbsolutePath());
+			    	logger.error("File does not exist: "  + file.getAbsolutePath());
 			    	System.exit(2);
 			    }
 			    logger.debug("Input: " + file.getAbsolutePath());
@@ -95,12 +114,13 @@ public class XML2YAMLApplication {
 		    else {
 			    logger.debug("Output: STDOUT");
 		    }
-		    
+
 		    // and convert
 		    new XML2YAML().convert(inputStream, outputStream);
 		}
 		catch(Exception exp) {
-		    System.out.println( "Unexpected exception:" + exp.getMessage() );
+		    logger.error( "Unexpected exception:" + exp.getMessage() );
+		    if (logger.isTraceEnabled()) logger.trace(exp.getMessage(), exp);
 		}		
 	}
 }

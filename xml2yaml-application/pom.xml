@@ -69,8 +69,11 @@
 						<manifest>
 							<mainClass>org.tbee.xml2yaml.application.XML2YAMLApplication</mainClass>
 						</manifest>
+		        		<manifestEntries>
+          					<Multi-Release>true</Multi-Release>
+        				</manifestEntries>
 					</archive>
-				</configuration>
+      		</configuration>
 				<executions>
 					<execution>
 						<id>make-assembly</id>
